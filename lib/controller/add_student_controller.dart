@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:demo_api_crud/services/students_services.dart';
 import 'package:get/get.dart';
 import '../models/students_model.dart';
@@ -18,20 +21,84 @@ class StudentController extends GetxController {
     showLoader();
     studentData.clear();
 
-    var responseData = await StudentService.getStudents();
-    for (var item in responseData) {
-      studentData.add(StudentsModel.fromJson(item));
-    }
+    try {
+      final responseData = await StudentService.getStudents().timeout(
+        Duration(seconds: 10),
+      );
 
-    hideLoader();
+      // Success: parse and add data
+      for (var item in responseData) {
+        studentData.add(StudentsModel.fromJson(item));
+      }
+    } on SocketException {
+      // No internet
+      Get.snackbar(
+        'No Internet',
+        'Please check your network connection and try again.',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } on TimeoutException {
+      // Request timed out
+      Get.defaultDialog(
+        title: 'Request Timeout',
+        middleText: 'Server is taking too long to respond.',
+        textConfirm: 'Retry',
+        onConfirm: () {
+          Get.back();
+          getStudents();
+        },
+        textCancel: 'Cancel',
+      );
+    } catch (e, st) {
+      // Unexpected error
+      if (!Get.isSnackbarOpen) {
+        Get.snackbar(
+          'Error',
+          'Something went wrong. Please try again later.',
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      }
+      print('getStudents error: $e');
+      print(st);
+    } finally {
+      hideLoader();
+    }
   }
 
   // Add new student
   Future<void> addStudents(Map<String, dynamic> data) async {
     showLoader();
-    await StudentService.addStudent(data);
-    await getStudents(); // Refresh data
-    hideLoader();
+    try {
+      await StudentService.addStudent(data).timeout(Duration(seconds: 10));
+      await getStudents(); // Refresh data
+    } on SocketException {
+      Get.snackbar(
+        'No Internet',
+        'Please check your network connection and try again.',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } on TimeoutException {
+      Get.defaultDialog(
+        title: 'Request Timeout',
+        middleText: 'Server is taking too long to respond.',
+        textConfirm: 'Retry',
+        onConfirm: () {
+          Get.back();
+          getStudents();
+        },
+        textCancel: 'Cancel',
+      );
+    } catch (e) {
+      if (!Get.isSnackbarOpen) {
+        Get.snackbar(
+          'Error',
+          'Something went wrong. Please try again later.',
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      }
+    } finally {
+      hideLoader();
+    }
   }
 
   // Update student
@@ -40,9 +107,37 @@ class StudentController extends GetxController {
     required Map<String, dynamic> data,
   }) async {
     showLoader();
-    await StudentService.updateStudent(id, data);
-    await getStudents(); // Refresh data
-    hideLoader();
+    try {
+      await StudentService.updateStudent(id, data);
+      await getStudents(); // Refresh data
+    } on SocketException {
+      Get.snackbar(
+        'No Internet',
+        'Please check your network connection and try again.',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } on TimeoutException {
+      Get.defaultDialog(
+        title: 'Request Timeout',
+        middleText: 'Server is taking too long to respond.',
+        textConfirm: 'Retry',
+        onConfirm: () {
+          Get.back();
+          getStudents();
+        },
+        textCancel: 'Cancel',
+      );
+    } catch (e) {
+      if (!Get.isSnackbarOpen) {
+        Get.snackbar(
+          'Error',
+          'Something went wrong. Please try again later.',
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      }
+    } finally {
+      hideLoader();
+    }
   }
 
   // Delete student

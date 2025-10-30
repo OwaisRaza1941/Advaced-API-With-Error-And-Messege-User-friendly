@@ -1,7 +1,8 @@
 import 'package:demo_api_crud/components/add_students_model.dart';
 import 'package:demo_api_crud/constants/styles.dart';
-import 'package:demo_api_crud/controller/add_student_controller.dart';
+import 'package:demo_api_crud/controller/student_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -33,7 +34,9 @@ class HomeScreen extends StatelessWidget {
 
       body: Obx(() {
         if (controller.isLoading.value) {
-          return Center(child: CircularProgressIndicator(strokeWidth: 4));
+          return Center(
+            child: SpinKitFadingCircle(color: Colors.purple, size: 50),
+          );
         }
         return controller.studentData.isNotEmpty
             ? ListView.builder(

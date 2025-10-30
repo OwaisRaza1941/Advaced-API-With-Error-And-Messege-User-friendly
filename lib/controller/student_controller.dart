@@ -143,9 +143,38 @@ class StudentController extends GetxController {
   // Delete student
   Future<void> deleteStudents(String id) async {
     showLoader();
-    await StudentService.deleteStudent(id);
-    await getStudents(); // Refresh data
-    hideLoader();
+    try {
+      await StudentService.deleteStudent(id).timeout(Duration(seconds: 10));
+      await getStudents(); // Refresh data
+    } on SocketException {
+      Get.snackbar(
+        'No Internet',
+        'Please check your network connection and try again',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } on TimeoutException {
+      Get.defaultDialog(
+        title: 'Request TimeOut',
+        middleText: 'Server is taking too long to respond.',
+        textConfirm: 'Retry',
+        onConfirm: () {
+          Get.back();
+          getStudents();
+        },
+        textCancel: 'Cancel',
+      );
+    } catch (e) {
+      if (!Get.isSnackbarOpen) {
+        Get.snackbar(
+          'Error',
+          'SomeThing Went Please try again later.',
+          snackPosition: SnackPosition.BOTTOM,
+        );
+        print('erro $e');
+      }
+    } finally {
+      hideLoader();
+    }
   }
 
   @override

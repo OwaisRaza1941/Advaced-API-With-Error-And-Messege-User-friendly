@@ -57,7 +57,7 @@ class HomeScreen extends StatelessWidget {
                       subtitle: Text(controller.studentData[index].email ?? ''),
                       trailing: Wrap(
                         children: [
-                          IconButton(
+                          IconButton( 
                             style: Styles.textButtonStyle,
                             onPressed: () async {
                               var result = await showStudentDailoge(

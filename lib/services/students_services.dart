@@ -9,7 +9,13 @@ class StudentService {
   static Future<List<dynamic>> getStudents() async {
     Uri uri = Uri.parse(baseUrl);
     var response = await http.get(uri);
-    return jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else if (response.statusCode == 404) {
+      throw 'Do not found (404)';
+    } else {
+      throw 'Failed to load students. status code ${response.statusCode}';
+    }
   }
 
   // POST

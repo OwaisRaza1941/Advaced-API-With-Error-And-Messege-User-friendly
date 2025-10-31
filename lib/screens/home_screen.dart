@@ -16,7 +16,7 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
-        title: Text("Demo Api Paractice"),
+        title: Text("Demo API Paractice"),
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(

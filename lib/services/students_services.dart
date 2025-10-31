@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 
 class StudentService {
   static const String baseUrl =
-      'https://crudcrud.com/api/a1805948a336444cbd963be0aaeb7a8a/smit';
+      'https://crudcrud.com/api/577722695adb44c195602badf01451e0/owais';
 
   // GET
   static Future<List<dynamic>> getStudents() async {

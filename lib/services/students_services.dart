@@ -16,7 +16,7 @@ class StudentService {
     } else {
       throw 'Failed to load students. status code ${response.statusCode}';
     }
-  }
+  } 
 
   // POST
   static Future<dynamic> addStudent(Map<String, dynamic> data) async {

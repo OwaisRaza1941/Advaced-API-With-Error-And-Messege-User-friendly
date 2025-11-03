@@ -67,7 +67,6 @@ class StudentController extends GetxController {
 
   // Add new student
   Future<void> addStudents(Map<String, dynamic> data) async {
-    showLoader();
     try {
       await StudentService.addStudent(data).timeout(Duration(seconds: 10));
       await getStudents(); // Refresh data
@@ -96,9 +95,7 @@ class StudentController extends GetxController {
           snackPosition: SnackPosition.BOTTOM,
         );
       }
-    } finally {
-      hideLoader();
-    }
+    } finally {}
   }
 
   // Update student

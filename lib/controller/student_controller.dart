@@ -54,7 +54,7 @@ class StudentController extends GetxController {
       if (!Get.isSnackbarOpen) {
         Get.snackbar(
           'Error',
-          'Something went wrong. Please try again later.',
+          e.toString(),
           snackPosition: SnackPosition.BOTTOM,
         );
       }
@@ -91,7 +91,7 @@ class StudentController extends GetxController {
       if (!Get.isSnackbarOpen) {
         Get.snackbar(
           'Error',
-          'Something went wrong. Please try again later.',
+          e.toString(),
           snackPosition: SnackPosition.BOTTOM,
         );
       }
@@ -128,7 +128,7 @@ class StudentController extends GetxController {
       if (!Get.isSnackbarOpen) {
         Get.snackbar(
           'Error',
-          'Something went wrong. Please try again later.',
+          e.toString(),
           snackPosition: SnackPosition.BOTTOM,
         );
       }
@@ -164,7 +164,7 @@ class StudentController extends GetxController {
       if (!Get.isSnackbarOpen) {
         Get.snackbar(
           'Error',
-          'SomeThing Went Please try again later.',
+          e.toString(),
           snackPosition: SnackPosition.BOTTOM,
         );
         print('erro $e');
